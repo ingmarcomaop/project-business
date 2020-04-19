@@ -26,5 +26,8 @@ public class ItemInvoice {
 	public void setQuantity(Integer quantity) {
 		this.quantity = quantity;
 	}
-
+	
+	public Integer totalPriceInvoice() {
+		return quantity * product.getPrice();
+	}
 }

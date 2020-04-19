@@ -38,5 +38,21 @@ public class AppConfiguration {
 		
 		return Arrays.asList(line1, line2);
 	}
+	
+	@Bean("itemsInvoiceOffice")
+	public List<ItemInvoice> itemResgitrationOffice(){
+		
+		Product product1 = new Product("Monitor LG LCD", 250);
+		Product product2 = new Product("Note Bokk Asus", 500);
+		Product product3 = new Product("HP Printer", 380);
+		Product product4 = new Product("Office Table Board", 340);
+		
+		ItemInvoice line1 = new ItemInvoice(product1, 2);
+		ItemInvoice line2 = new ItemInvoice(product2, 4);
+		ItemInvoice line3 = new ItemInvoice(product3, 1);
+		ItemInvoice line4 = new ItemInvoice(product4, 6);
+		
+		return Arrays.asList(line1, line2, line3, line4);
+	}
 
 }
