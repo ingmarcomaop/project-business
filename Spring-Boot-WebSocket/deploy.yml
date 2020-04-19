@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: chat-spring-boot
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: chat-spring-boot
+  template:
+    metadata:
+      labels:
+        app: chat-spring-boot
+    spec:
+      containers:
+      - name: chat-spring-boot
+        image: acrfortesting.azurecr.io/chat-spring-boot:latest
+        ports:
+        - containerPort: 80
+        imagePullPolicy: Always            
+
+      
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: chat-spring-boot
+spec:
+  type: LoadBalancer
+  ports:
+  - port: 80
+  selector:
+    app: chat-spring-boot

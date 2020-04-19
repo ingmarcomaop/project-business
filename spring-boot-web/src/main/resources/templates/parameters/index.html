@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8" />
+<title th:text="${title}"></title>
+</head>
+<body>
+	<h1 th:text="${title}"></h1>
+	<ul>
+		<li><a th:href="@{/parameters/string(text='Hola Marco')}">/parameters/string?text=Hola
+				Marco</a></li>
+		<li><a th:href="@{/parameters/string(text='Que tal Marco')}">/parameters/string?text=Que
+				tal Marco</a></li>
+		<li><a
+			th:href="@{/parameters/mix-parameters(greeting='¿How are you?', number=7)}">/parameters/mix-parameters</a></li>
+		<li><a
+			th:href="@{/parameters/mix-parameters-request(greeting='¿How are you?', number=11)}">/parameters/mix-parameters-request</a></li>
+	</ul>
+
+</body>
+</html>
