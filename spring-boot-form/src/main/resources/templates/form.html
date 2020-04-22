@@ -10,6 +10,27 @@
 	<form th:action="@{/form}" th:object="${user}" method="post">
 
 		<div>
+			<label for="country.code">Country</label>
+			<div>
+				<select id="country.code" th:field="*{country.code}">
+					<option value="">--- Select a country ---</option>
+					<option th:each="country: ${listCountries}"
+						th:text="${country.code}" th:value="${country.code}"></option>
+				</select>
+			</div>
+			<div th:if="${#fields.hasErrors('country.code')}" th:errors="*{country.code}"></div>
+		</div>
+
+		<div>
+			<label for="identifier">Identifier</label>
+			<div>
+				<input type="text" id="identifier" th:field="*{identifier}">
+			</div>
+			<div th:if="${#fields.hasErrors('identifier')}"
+				th:errors="*{identifier}"></div>
+		</div>
+
+		<div>
 			<label for="name">Name</label>
 			<div>
 				<input type="text" id="name" th:field="*{name}">
@@ -46,6 +67,24 @@
 				<input type="email" th:field="*{email}" id="email">
 			</div>
 			<div th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></div>
+		</div>
+
+		<div>
+			<label for="account">Account</label>
+			<div>
+				<input type="number" th:field="*{account}" id="account">
+			</div>
+			<div th:if="${#fields.hasErrors('account')}" th:errors="*{account}"></div>
+		</div>
+
+		<div>
+			<label for="birthDate">Birth date</label>
+			<div>
+				<input type="date" th:field="*{birthDate}" id="birthDate"
+					placeholder="yyyy-MM-dd">
+			</div>
+			<div th:if="${#fields.hasErrors('birthDate')}"
+				th:errors="*{birthDate}"></div>
 		</div>
 
 		<div>

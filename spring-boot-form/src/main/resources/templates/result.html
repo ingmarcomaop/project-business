@@ -14,6 +14,9 @@
 		<li th:text="${user.password}"></li>
 		<li th:text="${user.email}"></li>
 		<li th:text="${user.identifier}"></li>
+		<li th:text="${user.account}"></li>
+		<li th:text="${user.country.code}"></li>
+		<li th:text="${#calendars.format(user.birthDate, ('dd-MM-yyyy'))}"></li>
 	</ul>
 
 </body>

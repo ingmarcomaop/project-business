@@ -1,29 +1,60 @@
 package com.bolsadeideas.springboot.form.app.models.domain;
 
+import java.util.Date;
+
+import javax.validation.Valid;
 import javax.validation.constraints.Email;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Past;
+import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
+
+import org.springframework.format.annotation.DateTimeFormat;
+
+import com.bolsadeideas.springboot.form.app.validations.IdentifierRegex;
+import com.bolsadeideas.springboot.form.app.validations.Required;
 
 public class User {
 
+	// @Pattern(regexp = "[0-9]{2}[.][\\d]{3}[.,][\\d]{3}[-][A-Z]{1}") // la
+	// notación \\d es cualquier digito de 0 a 9 (validating regular expression)
+	@IdentifierRegex
 	private String identifier;
 
 	@NotEmpty(message = "Please, type your name.")
 	private String name;
 
-	@NotEmpty
+	// @NotEmpty
+	@Required
 	private String lastName;
 
-	@NotEmpty
+	@NotBlank
 	@Size(min = 3, max = 8)
 	private String username;
 
-	@NotEmpty
+	@NotEmpty //Valida strings
 	private String password;
 
-	@NotEmpty
-	@Email//(message = "The email format is incorrect.")
+	@Required
+	@Email // (message = "The email format is incorrect.")
 	private String email;
+
+	@Min(5)
+	@Max(5000)
+	@NotNull
+	private Integer account;
+
+	@NotNull //Valida objetos
+	@Past
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	private Date birthDate;
+
+	@Valid
+	private Country country;
 
 	public String getUsername() {
 		return username;
@@ -71,6 +102,30 @@ public class User {
 
 	public void setIdentifier(String identifier) {
 		this.identifier = identifier;
+	}
+
+	public Integer getAccount() {
+		return account;
+	}
+
+	public void setAccount(Integer account) {
+		this.account = account;
+	}
+
+	public Date getBirthDate() {
+		return birthDate;
+	}
+
+	public void setBirthDate(Date birthDate) {
+		this.birthDate = birthDate;
+	}
+
+	public Country getCountry() {
+		return country;
+	}
+
+	public void setCountry(Country country) {
+		this.country = country;
 	}
 
 }
