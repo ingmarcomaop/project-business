@@ -1,6 +1,7 @@
 package com.bolsadeideas.springboot.form.app.models.domain;
 
 import java.util.Date;
+import java.util.List;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Email;
@@ -53,8 +54,34 @@ public class User {
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date birthDate;
 
-	@Valid
+	@NotNull
 	private Country country;
+	
+	@NotEmpty
+	private List<Role> roles;
+	
+	private Boolean enable;
+	
+	@NotEmpty
+	private String gender;
+	
+	private String secretValue;
+
+	public String getSecretValue() {
+		return secretValue;
+	}
+
+	public void setSecretValue(String secretValue) {
+		this.secretValue = secretValue;
+	}
+
+	public String getGender() {
+		return gender;
+	}
+
+	public void setGender(String gender) {
+		this.gender = gender;
+	}
 
 	public String getUsername() {
 		return username;
@@ -126,6 +153,22 @@ public class User {
 
 	public void setCountry(Country country) {
 		this.country = country;
+	}
+
+	public List<Role> getRoles() {
+		return roles;
+	}
+
+	public void setRoles(List<Role> roles) {
+		this.roles = roles;
+	}
+
+	public Boolean getEnable() {
+		return enable;
+	}
+
+	public void setEnable(Boolean enable) {
+		this.enable = enable;
 	}
 
 }

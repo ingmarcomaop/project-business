@@ -7,7 +7,7 @@ public class Country {
 
 	private Integer id;
 	
-	@NotEmpty
+	//@NotEmpty
 	private String code;
 	private String name;
 
@@ -43,6 +43,12 @@ public class Country {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	@Override
+	public String toString() {
+		
+		return this.id.toString();
 	}
 
 }
