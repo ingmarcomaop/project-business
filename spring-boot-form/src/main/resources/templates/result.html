@@ -9,9 +9,11 @@
 	crossorigin="anonymous">
 </head>
 <body>
+	<section th:replace="components/time :: interceptor"></section>
 
 	<div class="container">
-		<a th:href="@{/form}" class="btn btn-success btn-lg my-3">Back to form</a>
+		<a th:href="@{/form}" class="btn btn-success btn-lg my-3">Back to
+			form</a>
 		<ul class="list-group my-2">
 			<li class="list-group-item active" th:text="${title}"></li>
 			<li class="list-group-item" th:text="${user.name}"></li>
@@ -33,7 +35,7 @@
 		</ul>
 
 		<ul class="list-group my-3">
-		<li class="list-group-item active" th:text="'Roles'"></li>
+			<li class="list-group-item active" th:text="'Roles'"></li>
 			<li class="list-group-item" th:each="role: ${user.roles}"
 				th:text="${role.id} + ': ' + ${role.name} + '=> ' + ${role.role}"></li>
 		</ul>
