@@ -1,0 +1,10 @@
+Download:
+https://dev.mysql.com/downloads/mysql/
+
+Instalación:
+https://dev.mysql.com/doc/mysql-apt-repo-quick-guide/en/
+
+https://stackoverflow.com/questions/41645309/mysql-error-access-denied-for-user-rootlocalhost
+
+user: root
+password: root

@@ -11,6 +11,9 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -23,18 +26,25 @@ public class Client implements Serializable {
 	private Long id;
 
 	//@Column(name = "client_name")
+	@NotEmpty
 	private String name;
 	
+	@NotEmpty
 	@Column(name = "last_name")
 	private String lastName;
 	
 	//@Column(name = "client_email")
+	@NotEmpty
+	@Email
 	private String email;
 
+	@NotNull
 	@Column(name = "create_at")
 	@Temporal(TemporalType.DATE)
 	@DateTimeFormat(pattern="yyyy-MM-dd")
 	private Date createAt;
+	
+	private String foto;
 
 	private static final long serialVersionUID = 1L;
 	
@@ -80,6 +90,14 @@ public class Client implements Serializable {
 
 	public static long getSerialversionuid() {
 		return serialVersionUID;
+	}
+
+	public String getFoto() {
+		return foto;
+	}
+
+	public void setFoto(String foto) {
+		this.foto = foto;
 	}
 
 }
