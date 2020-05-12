@@ -1,16 +1,25 @@
 package com.bolsadeideas.springboot.app.controllers;
 
+import java.net.MalformedURLException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Map;
+import java.util.UUID;
+import java.io.File;
+import java.lang.Object;
 
 import javax.validation.Valid;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -34,6 +43,32 @@ public class ClientController {
 
 	@Autowired
 	private IClientService clientService;
+	
+	private final Logger log = LoggerFactory.getLogger(getClass());
+	
+	private final static String UPLOADS_FOLDER = "uploads";
+	
+	@GetMapping(value = "/uploads/{filename:.+}")
+	public ResponseEntity<Resource> showPhoto(@PathVariable String filename){
+		
+		Path pathPhoto = Paths.get(UPLOADS_FOLDER).resolve(filename).toAbsolutePath();
+		log.info("patPhoto: ", pathPhoto);
+		Resource resource = null;
+		
+		try {
+			resource = new UrlResource(pathPhoto.toUri());
+			if(!resource.exists() || !resource.isReadable()) {
+				throw new RuntimeException("Error: the image can not be loaded: " + pathPhoto.toString());
+			}
+		} catch (MalformedURLException e) {
+			e.printStackTrace();
+		}
+		
+		return ResponseEntity.ok()
+				.header(org.springframework.http.HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\""+ resource.getFilename() +"\"")
+				.body(resource);
+	}
+	
 	
 	@GetMapping(value = "/show/{id}")
 	public String show(@PathVariable(value="id") Long id, Map<String, Object> model, RedirectAttributes flash) {
@@ -113,17 +148,37 @@ public class ClientController {
 		}
 		
 		if(!foto.isEmpty()) {
+			
+			if(client.getId() != null 
+					&& client.getId() > 0
+					&& client.getFoto() != null
+					&& client.getFoto().length() > 0) {
+				
+				Path rootPath = Paths.get(UPLOADS_FOLDER).resolve(client.getFoto()).toAbsolutePath();
+				File file = rootPath.toFile();
+				
+				if(file.exists() && file.canRead()) {
+					file.delete();
+				}
+				
+			}
 		
 			//String rootPath = "C://tmp/uploads"; //windows
-			String rootPath = "/home/marcoortega/temp-spring-boot/uploads";
+			//String rootPath = "/home/marcoortega/temp-spring-boot/uploads";
+			
+			String uniqueFilename = UUID.randomUUID().toString() + "_" + foto.getOriginalFilename();
+			Path rootPath = Paths.get(UPLOADS_FOLDER).resolve(uniqueFilename);
+			
+			Path rootAbsolutePath = rootPath.toAbsolutePath();
+			log.info("rootPath: ", rootPath);
+			log.info("rootAbsolutePath", rootAbsolutePath);
 			
 			try {
-				byte[] bytes = foto.getBytes();
-				Path pathComplete = Paths.get(rootPath + "//" + foto.getOriginalFilename());
-				Files.write(pathComplete, bytes);
-				flash.addFlashAttribute("info", "The file '" + foto.getOriginalFilename() + "' has been uploaded successfuly");
 				
-				client.setFoto(foto.getOriginalFilename());
+				Files.copy(foto.getInputStream(), rootAbsolutePath);
+				flash.addFlashAttribute("info", "The file '" + uniqueFilename + "' has been uploaded successfuly");
+				
+				client.setFoto(uniqueFilename);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -145,8 +200,19 @@ public class ClientController {
 	public String delete(@PathVariable(value="id") Long id, RedirectAttributes flash) {
 		
 		if(id > 0) {
+			Client client = clientService.findOne(id);
+			
 			clientService.delete(id);
 			flash.addFlashAttribute("success", "Client deleted successfully");
+			
+			Path rootPath = Paths.get(UPLOADS_FOLDER).resolve(client.getFoto()).toAbsolutePath();
+			File file = rootPath.toFile();
+			
+			if(file.exists() && file.canRead()) {
+				if(file.delete()) {
+					flash.addFlashAttribute("info", "Photo " + client.getFoto() + " deleted successfully");
+				}
+			}
 		}
 		
 		return "redirect:/listclient";
