@@ -9,13 +9,18 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.bolsadeideas.springboot.app.models.dao.IClientDao;
+import com.bolsadeideas.springboot.app.models.dao.IProductDao;
 import com.bolsadeideas.springboot.app.models.entity.Client;
+import com.bolsadeideas.springboot.app.models.entity.Product;
 
 @Service
 public class ClientServiceImplementation implements IClientService{
 	
 	@Autowired
 	private IClientDao clientDao;
+	
+	@Autowired
+	private IProductDao productDao;
 
 	@Override
 	@Transactional(readOnly = true)
@@ -34,7 +39,6 @@ public class ClientServiceImplementation implements IClientService{
 	@Override
 	@Transactional(readOnly = true)
 	public Client findOne(Long id) {
-		
 		return clientDao.findById(id).orElse(null);
 	}
 
@@ -48,8 +52,13 @@ public class ClientServiceImplementation implements IClientService{
 	@Override
 	@Transactional(readOnly = true)
 	public Page<Client> findAll(Pageable pageable) {
-		
 		return clientDao.findAll(pageable);
+	}
+
+	@Override
+	@Transactional(readOnly = true)
+	public List<Product> findByName(String term) {
+		return productDao.findByName(term);
 	}
 
 }
