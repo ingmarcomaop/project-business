@@ -47,12 +47,18 @@
 					return false;
 				}
 			});
+			
+			$("form").submit(function(){
+				$("#templateItemsInvoice").remove();
+				return;
+			});
 
 		});
 		
 		var itemsHelper = {
 			calcImporte: function(id, price, quantity){
 				$("#total_importe_" + id).html(parseInt(price) * parseInt(quantity));
+				this.computeGrandTotal();
 			},
 			hasProduct: function(id){
 				var result = false;
@@ -72,6 +78,18 @@
 			},
 			deleteInvoiceLine: function(id){
 				$("#row_" + id).remove();
+				this.computeGrandTotal();
+			},
+			computeGrandTotal: function(){
+				var total = 0;
+				
+				$('span[id^="total_importe_"]').each(function(){
+					
+					total += parseInt($(this).html());
+					
+				});
+				
+				$('#grand_total').html(total);
 			}
 		}
 		

@@ -40,6 +40,8 @@
 							<th>Description</th>
 							<th>Date</th>
 							<th>Total</th>
+							<th>Show</th>
+							<th>Delete</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -48,6 +50,9 @@
 							<td th:text="${invoice.description}"></td>
 							<td th:text="${invoice.createAt}"></td>
 							<td th:text="${invoice.total}"></td>
+							<td><a class="btn btn-primary btn-xs" th:href="@{'/invoice/show/' + ${invoice.id}}" th:text="'Detail'"></a></td>
+							<td><a class="btn btn-danger btn-xs" th:href="@{'/invoice/delete/' + ${invoice.id}}" th:text="'Delete'" 
+								onclick="return confirm('Are you sure you want to delete the invoice?');"></a></td>
 						</tr>
 
 					</tbody>

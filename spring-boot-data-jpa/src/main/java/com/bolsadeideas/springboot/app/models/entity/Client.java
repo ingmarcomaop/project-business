@@ -124,4 +124,11 @@ public class Client implements Serializable {
 		invoices.add(invoice);
 	}
 
+	@Override
+	public String toString() {
+		return name + " " + lastName;
+	}
+	
+	
+
 }
